@@ -115,7 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {});
       });
     } else {
-      // User canceled the picker
     }
     _videoController.play();
   }
@@ -159,74 +158,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// class TransformText extends StatefulWidget {
-//     // TransformText({Key key}) : super(key: key); // changed
-
-//     @override
-//     _TransformTextState createState() => _TransformTextState();
-//   }
-
-//   class _TransformTextState extends State<TransformText> {
-//     double scale = 0.0;
-
-//     @override
-//     Widget build(BuildContext context) {
-//       final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
-
-//       return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Single finger Rotate text'), // changed
-//         ),
-//         body: Center(
-//           child: MatrixGestureDetector(
-//             onMatrixUpdate: (m, tm, sm, rm) {
-//               notifier.value = m;
-//             },
-//             child: AnimatedBuilder(
-//               animation: notifier,
-//               builder: (ctx, child) {
-//                 return Transform(
-//                   transform: notifier.value,
-//                   child: Center(
-//                     child: Stack(
-//                       children: <Widget>[
-//                         Container(
-//                           color: Colors.transparent,
-//                           padding: EdgeInsets.only(top: 80, bottom: 50),
-//                           // margin: EdgeInsets.all(50),
-//                           child: Transform.scale(
-//                             scale:
-//                                 1, // make this dynamic to change the scaling as in the basic demo
-//                             origin: Offset(0.0, 0.0),
-//                             child: Container(
-//                               height: 100,
-//                               child: Text(
-//                                 "Two finger to zoom to handle user input and any other things!!",
-//                                 style:
-//                                     TextStyle(fontSize: 26, color: Colors.black),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//         ),
-//       );
-//     }
-//   }
-
-// FloatingActionButton(
-//   onPressed: () {
-//     setState(() {
-//       _videoController.value.isPlaying
-//           ? _videoController.pause()
-//           : _videoController.play();
-//     });
-//   },
-//   child: Icon(_videoController.value.isPlaying ? Icons.pause : Icons.play_arrow),
-// )

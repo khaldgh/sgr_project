@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 
-class ScalableText extends StatefulWidget {
+class SC extends StatefulWidget {
   final TextEditingController textController;
   final ValueNotifier<Matrix4> notifier;
-  const ScalableText(
+  const SC(
       {super.key, required this.textController, required this.notifier});
 
   @override
-  State<ScalableText> createState() => _ScalableTextState();
+  State<SC> createState() => _SCState();
 }
 
-class _ScalableTextState extends State<ScalableText> {
+class _SCState extends State<SC> {
   @override
   Widget build(BuildContext context) {
     return MatrixGestureDetector(
@@ -33,14 +33,14 @@ class _ScalableTextState extends State<ScalableText> {
                           1, // make this dynamic to change the scaling as in the basic demo
                       origin: Offset(0.0, 0.0),
                       child: Container(
-                        color: Colors.transparent,
-                        height: 250,
-                        width: 250,
+                        color: Colors.blue,
+                        height: 100,
+                        width: 100,
                         child: Center(
                           child: Text(
                             widget.textController.text,
                             style: const TextStyle(
-                                fontSize: 26, color: Colors.blue),
+                                fontSize: 26, color: Colors.black),
                           ),
                         ),
                       ),

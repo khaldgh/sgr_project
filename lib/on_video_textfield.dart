@@ -13,8 +13,7 @@ class OnVideoTextField extends StatefulWidget {
       required this.focusNode,
       required this.videoController,
       required this.finishedTyping,
-      required this.reRenderState
-      });
+      required this.reRenderState});
 
   @override
   State<OnVideoTextField> createState() => _OnVideoTextFieldState();
@@ -38,9 +37,7 @@ class _OnVideoTextFieldState extends State<OnVideoTextField> {
         decoration: InputDecoration(border: InputBorder.none),
         onEditingComplete: () {
           widget.focusNode.unfocus();
-          widget.videoController.initialize().then((value) {
-              widget.reRenderState();
-          });
+            widget.reRenderState();
         },
       ),
     );

@@ -34,8 +34,8 @@ class _ScalableTextState extends State<ScalableText> {
                       origin: Offset(0.0, 0.0),
                       child: Container(
                         color: Colors.transparent,
-                        height: 250,
-                        width: 250,
+                        height: 110,
+                        width: 110,
                         child: Center(
                           child: Text(
                             widget.textController.text,

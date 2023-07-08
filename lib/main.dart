@@ -63,7 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _textController = TextEditingController();
   FocusNode _focusNode = FocusNode();
   double scale = 0.0;
-  final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
+  final ValueNotifier<Matrix4> notifier1 = ValueNotifier(Matrix4.identity());
+  final ValueNotifier<Matrix4> notifier2 = ValueNotifier(Matrix4.identity());
+  List<ValueNotifier<Matrix4>> notifiers = [ValueNotifier(Matrix4.identity()), ValueNotifier(Matrix4.identity())];
   bool _finishedTyping = false;
   List<Color> _colors = [
     Colors.red,
@@ -76,9 +78,15 @@ class _MyHomePageState extends State<MyHomePage> {
     Colors.grey,
   ];
 
-  void _reRenderState() {
+  void InvertBoolToAddFirstText() {
     setState(() {
       _finishedTyping = true;
+    });
+  }
+
+  void InvertBoolToAddSecondText() {
+    setState(() {
+      _finishedTyping = false;
     });
   }
 
@@ -114,13 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
       _videoController.initialize().then((value) {
         setState(() {});
       });
-    } else {
-    }
+    } else {}
     _videoController.play();
   }
 
   @override
   Widget build(BuildContext context) {
+    _videoController.setLooping(true);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -138,17 +146,35 @@ class _MyHomePageState extends State<MyHomePage> {
                           alignment: Alignment.center,
                           children: [
                             VideoPlayer(_videoController),
-                            AddTextButton(focusNode: _focusNode),
+                            AddTextButton(
+                                focusNode: _focusNode,
+                                reRenderState: InvertBoolToAddSecondText,
+                                videoController: _videoController),
                             !_finishedTyping
                                 ? OnVideoTextField(
                                     textController: _textController,
                                     focusNode: _focusNode,
                                     videoController: _videoController,
                                     finishedTyping: _finishedTyping,
-                                    reRenderState: _reRenderState)
-                                : ScalableText(
-                                    textController: _textController,
-                                    notifier: notifier)
+                                    reRenderState: InvertBoolToAddFirstText)
+                                : Positioned(
+                                  top: 0,
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Expanded(
+                                    child: Container(
+                                      height: double.infinity,
+                                      width: 100,
+                                      child: ListView.builder(
+                                        itemCount: 2,
+                                        itemBuilder: (BuildContext context, int index) => ScalableText(
+                                            textController: _textController,
+                                            notifier: notifiers[index]),
+                                      ),
+                                    ),
+                                  ),
+                                )
                           ],
                         ),
                       )
@@ -157,4 +183,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-

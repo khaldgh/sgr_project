@@ -60,12 +60,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   File file = File('path');
   late VideoPlayerController _videoController;
-  TextEditingController _textController = TextEditingController();
+  List<TextEditingController> _textControllers = [];
   FocusNode _focusNode = FocusNode();
   double scale = 0.0;
-  final ValueNotifier<Matrix4> notifier1 = ValueNotifier(Matrix4.identity());
-  final ValueNotifier<Matrix4> notifier2 = ValueNotifier(Matrix4.identity());
-  List<ValueNotifier<Matrix4>> notifiers = [ValueNotifier(Matrix4.identity()), ValueNotifier(Matrix4.identity())];
+  // final ValueNotifier<Matrix4> notifier1 = ValueNotifier(Matrix4.identity());
+  // final ValueNotifier<Matrix4> notifier2 = ValueNotifier(Matrix4.identity());
+  // List<ValueNotifier<Matrix4>> _notifiers = [
+  //   ValueNotifier(Matrix4.identity()),
+  //   ValueNotifier(Matrix4.identity()),
+  //   ValueNotifier(Matrix4.identity()),
+  // ];
+  List<ValueNotifier<Matrix4>> _notifiers = [];
   bool _finishedTyping = false;
   List<Color> _colors = [
     Colors.red,
@@ -79,6 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   void InvertBoolToAddFirstText() {
+    _notifiers.add(ValueNotifier(Matrix4.identity()));
+    _textControllers.add(TextEditingController());
     setState(() {
       _finishedTyping = true;
     });
@@ -107,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement dispose
     super.dispose();
     _videoController.dispose();
-    _textController.dispose();
+    _textControllers.forEach((element) => element.dispose());
     _focusNode.dispose();
   }
 
@@ -122,12 +129,15 @@ class _MyHomePageState extends State<MyHomePage> {
       _videoController.initialize().then((value) {
         setState(() {});
       });
+    _textControllers.add(TextEditingController());
     } else {}
     _videoController.play();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    print(_textControllers.length);
     _videoController.setLooping(true);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -150,30 +160,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                 focusNode: _focusNode,
                                 reRenderState: InvertBoolToAddSecondText,
                                 videoController: _videoController),
-                            !_finishedTyping
-                                ? OnVideoTextField(
-                                    textController: _textController,
-                                    focusNode: _focusNode,
-                                    videoController: _videoController,
-                                    finishedTyping: _finishedTyping,
-                                    reRenderState: InvertBoolToAddFirstText)
-                                : Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Expanded(
-                                    child: Container(
-                                      height: double.infinity,
-                                      width: 100,
-                                      child: ListView.builder(
-                                        itemCount: 2,
-                                        itemBuilder: (BuildContext context, int index) => ScalableText(
-                                            textController: _textController,
-                                            notifier: notifiers[index]),
-                                      ),
-                                    ),
-                                  ),
+                            if (!_finishedTyping)
+                              OnVideoTextField(
+                                  textControllers: _textControllers,
+                                  focusNode: _focusNode,
+                                  videoController: _videoController,
+                                  finishedTyping: _finishedTyping,
+                                  reRenderState: InvertBoolToAddFirstText)
+                            else
+                              for (int i = 0; i<_notifiers.length; i++)
+                                Positioned.fill(
+                                  child: ScalableText(
+                                      textController: _textControllers[i],
+                                      notifier: _notifiers[i]),
                                 )
                           ],
                         ),

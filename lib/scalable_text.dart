@@ -33,7 +33,7 @@ class _ScalableTextState extends State<ScalableText> {
                           1, // make this dynamic to change the scaling as in the basic demo
                       origin: Offset(0.0, 0.0),
                       child: Container(
-                        color: Colors.transparent,
+                        color: Colors.red,
                         height: 110,
                         width: 110,
                         child: Center(
